@@ -72,9 +72,11 @@
          * @param {number} indentLevel
          */ 
         function processNode(node, indentLevel = 0) {
+            if(empty(node)) return null;
+            
             const indentBase = ' '.repeat(indentLevel * 2);
             
-            const name = node.nodeName.toLowerCase();
+            const name = node?.nodeName.toLowerCase();
             let attributes = [];
             let children = "";
 
