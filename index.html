@@ -14,11 +14,12 @@
     
     <link rel="stylesheet" href="dracula.css">
 
+
 </head>
 <body>
     <div class="container mt-5">
         <h1 class="text-center">HTML to OpenScript.Js Markup Code</h1>
-        <a href="https://levizwannah.github.io/OpenScript.JS">Learn more on how to intergrate OpenScript into your workflow</a>
+        <a href="https://levizwannah.github.io/OpenScript.Js">Learn more on how to intergrate OpenScript into your workflow</a>
         <p class="text-center">Convert your HTML code to OpenScript.Js Markup Code to make it easier to transition to OpenScript.Js and enjoy all the wonderful functionalities it offers.</p>
     </div>
     <div class="container mt-5">
@@ -34,6 +35,7 @@
     <div class="container mb-5">
         <div class="mb-3 d-flex justify-content-between align-items-center">
             <span>OpenScript.Js Markup:</span>
+            
         </div>
         <div class="output h-100">
             <pre class="rounded">
@@ -58,6 +60,8 @@
 
     document.getElementById('clear-button').onclick = () => {
         input.value = '';
+        
+        
     }
 
     function convertToOpenScript(htmlString) {
@@ -81,7 +85,8 @@
 
             if(node.nodeType !== node.TEXT_NODE){
                 attributes = Array.from(node.attributes)
-                    .map(attr => `${attr.name.replace(/-/g, '_')}: "${attr.value}"`);
+                .map(attr => `${attr.name.replace(/-/g, '_')}: "${attr.value}"`);
+                    
             }
             else {
                 children = node.textContent.replace(/[\n\s]+/g, ' ').trim();
@@ -92,7 +97,7 @@
             if(attributes.length > 1){
                 attrTxt = attributes.join(`,\n${indentBase}    `);
                 attrTxt = 
-                `${indentBase}  {\n${indentBase}    ${attrTxt}\n${indentBase}  }`
+                `${indentBase}  {\n${indentBase}    ${attrTxt}\n ${indentBase}  }`
             }
 
             if(attributes.length === 1){
@@ -117,8 +122,8 @@
             }
 
             if(!empty(attrTxt) && !empty(children)) {
-                attrTxt = `\n${attrTxt},`;
-                //children = `\n${children}`;
+               attrTxt = `\n${attrTxt},`;
+                children = `\n${children}`;
             } 
 
             if(!empty(children) && attributes.length === 1){
@@ -128,7 +133,18 @@
             return node.nodeType === Node.TEXT_NODE ? (empty(children) ? null : `"${children}"`) : `\n${indentBase}h.${name}(${attrTxt}${children}${!empty(children) && !empty(attrTxt) ? `\n${indentBase}` : ''})`;
         }
 
-        return processNode(div.firstChild);
+        let output = "";
+        
+        for(const element of div.childNodes){
+            let temp = processNode(element);
+            if(empty(temp)) continue; 
+            output += temp;
+            if(!empty(output)) output += `\n`; 
+        }
+
+      
+        return output;
+       
     }
 
     const input = document.getElementById('html-input');
@@ -155,6 +171,7 @@
     }
 
     output.innerHTML = convertToOpenScript(input.value);
+   
 
     </script>
 </body>
