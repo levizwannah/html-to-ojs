@@ -99,7 +99,7 @@
             if(attributes.length > 1){
                 attrTxt = attributes.join(`,\n${indentBase}    `);
                 attrTxt = 
-                `${indentBase}  {\n${indentBase}    ${attrTxt}\n ${indentBase}  }`
+                `${indentBase}  {\n${indentBase}    ${attrTxt}\n${indentBase}  }`
             }
 
             if(attributes.length === 1){
@@ -113,7 +113,9 @@
                     if(!empty(children) && !empty(output)) children += ', ';
 
                     if(child.nodeType === Node.TEXT_NODE && !empty(output) && !empty(attrTxt)){
-                        output = `\n${indentBase}  ${output}`;
+                        
+                        output = `${indentBase}  ${output}`;
+                        if(!empty(children)) output = `\n${output}`;
                     }
 
                     if(!empty(output)) children +=  output;
@@ -125,14 +127,14 @@
 
             if(!empty(attrTxt) && !empty(children)) {
                attrTxt = `\n${attrTxt},`;
-                children = `\n${children}`;
+               children = `\n${children}`;
             } 
 
             if(!empty(children) && attributes.length === 1){
                 attrTxt = `${indentBase}  ${attrTxt}`;
             }
 
-            return node.nodeType === Node.TEXT_NODE ? (empty(children) ? null : `"${children}"`) : `\n${indentBase}h.${name}(${attrTxt}${children}${!empty(children) && !empty(attrTxt) ? `\n${indentBase}` : ''})`;
+            return node.nodeType === Node.TEXT_NODE ? (empty(children) ? null : `"${children}"`) : `\n${indentBase}h.${name}(${attrTxt}${children}${!empty(children) && !empty(attrTxt) ? `\n${indentBase}` : ''})`.replace(/\n+/g, '\n');
         }
 
         let output = "";
