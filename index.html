@@ -19,8 +19,12 @@
 <body>
     <div class="container mt-5">
         <h1 class="text-center">HTML to OpenScript.Js Markup Code</h1>
+        
+        
+        <p class="text-center">Convert your HTML code to OpenScript.Js Markup Code to make it easier to transition to OpenScript.Js and enjoy all the wonderful functionalities it offers.
+        <br/>
         <a href="https://levizwannah.github.io/OpenScript.Js">Learn more on how to intergrate OpenScript into your workflow</a>
-        <p class="text-center">Convert your HTML code to OpenScript.Js Markup Code to make it easier to transition to OpenScript.Js and enjoy all the wonderful functionalities it offers.</p>
+        </p>
     </div>
     <div class="container mt-5">
         <div class="mb-3 d-flex justify-content-between align-items-center">
@@ -148,7 +152,6 @@
 
       
         return output;
-       
     }
 
     const input = document.getElementById('html-input');
@@ -156,17 +159,12 @@
     input.value = 
 `<div class="container">
     <h1>Hello OpenScript</h1>
-    Hi OpenScript
-    <span id="span-1" class="span-class-1">This is a span</span>
-    <i class="fa-solid far"></i>
-    Hi OpenScript 2 
+    <span id="span-1" class="span-class-1"><i class="fa-solid far"></i> This is a span.</span>
     <div id="data-div" data-bs-name="ojs">
-        Ojs is my framework
-        <button type="button" id="button-1">Click Me</button>
+        OJS is Nice, try it out
+        <button type="button" id="button-1" onclick="func()">Click Me</button>
     </div>
-    <p>Hello there ChatGPT</p>
-    <br/>
-    Final text
+    <p>Hello there, Levi <br/> How are you?</p>
 </div>`;
 
     input.oninput = () => {
