@@ -54,127 +54,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
     <script src="https://unpkg.com/highlightjs-copy@1.0.3/dist/highlightjs-copy.min.js"></script>
+
+    <script src="html-ojs.js"></script>
+    <script src="emmet.min.js"></script>
     <script>
-
-    hljs.highlightAll();
-    hljs.addPlugin(new CopyButtonPlugin());
-
-    const copyButton = document.getElementById('copy-button');
-    const output = document.getElementById('output');
-
-    document.getElementById('clear-button').onclick = () => {
-        input.value = '';
-        
-        
-    }
-
-    function convertToOpenScript(htmlString) {
-        const empty = (data) => !data || data.length === 0 || /^[\s\t\n]+$/.test(data);
-
-        if(empty(htmlString)) return '';
-        
-        const div = document.createElement('div');
-        div.innerHTML = htmlString.trim();
-
-        /**
-         * @param {Node} node
-         * @param {number} indentLevel
-         */ 
-        function processNode(node, indentLevel = 0) {
-            if(empty(node)) return null;
-            
-            const indentBase = ' '.repeat(indentLevel * 4);
-            
-            const name = node?.nodeName.toLowerCase();
-            let attributes = [];
-            let children = "";
-
-            if(node.nodeType !== node.TEXT_NODE){
-                attributes = Array.from(node.attributes)
-                .map(attr => `${attr.name.replace(/-/g, '_')}: "${attr.value}"`);
-                    
-            }
-            else {
-                children = node.textContent.replace(/[\n\s]+/g, ' ').trim();
-            }
-
-            let attrTxt = "";
-
-            if(attributes.length > 1){
-                attrTxt = attributes.join(`,\n${indentBase}        `);
-                attrTxt = 
-                `${indentBase}    {\n${indentBase}        ${attrTxt}\n${indentBase}    }`
-            }
-
-            if(attributes.length === 1){
-                attrTxt = `{${attributes[0]}}`;
-            }
-
-            if(node.childNodes){
-                for(let child of node.childNodes){
-                    
-                    let output = processNode(child, indentLevel + 1);
-                    if(!empty(children) && !empty(output)) children += ', ';
-
-                    if(child.nodeType === Node.TEXT_NODE && !empty(output) && !empty(attrTxt)){
-                        
-                        output = `${indentBase}    ${output}`;
-                        if(!empty(children)) output = `\n${output}`;
-                    }
-
-                    if(!empty(output)) children +=  output;
-                }
-            }
-            if(attributes.length === 1 && !empty(children)) {
-                attrTxt = `${indentBase}    ${attrTxt}`;
-            }
-
-            if(!empty(attrTxt) && !empty(children)) {
-               attrTxt = `\n${attrTxt},`;
-               children = `\n${children}`;
-            } 
-
-            if(!empty(children) && attributes.length === 1){
-                attrTxt = `${indentBase}    ${attrTxt}`;
-            }
-
-            return node.nodeType === Node.TEXT_NODE ? (empty(children) ? null : `"${children}"`) : `\n${indentBase}h.${name}(${attrTxt}${children}${!empty(children) && !empty(attrTxt) ? `\n${indentBase}` : ''})`.replace(/\n+/g, '\n');
-        }
-
-        let output = "";
-        
-        for(const element of div.childNodes){
-            let temp = processNode(element);
-            if(empty(temp)) continue; 
-            output += temp;
-            if(!empty(output)) output += `\n`; 
-        }
-
-      
-        return output;
-    }
-
-    const input = document.getElementById('html-input');
-
-    input.value = 
-`<div class="container">
-    <h1>Hello OpenScript</h1>
-    <span id="span-1" class="span-class-1"><i class="fa-solid far"></i> This is a span.</span>
-    <div id="data-div" data-bs-name="ojs">
-        OJS is Nice, try it out
-        <button type="button" id="button-1" onclick="func()">Click Me</button>
-    </div>
-    <p>Hello there, Levi <br/> How are you?</p>
-</div>`;
-
-    input.oninput = () => {
-        output.innerHTML = convertToOpenScript(input.value);
-        hljs.highlightAll();
-    }
-
-    output.innerHTML = convertToOpenScript(input.value);
-   
-
+        emmet.require('textarea').setup({
+            pretty_break: true, // enable formatted line breaks (when inserting 
+                                // between opening and closing tag) 
+            use_tab: true    ,   // expand abbreviations by Tab key
+           
+             
+        });
     </script>
 </body>
 </html>
